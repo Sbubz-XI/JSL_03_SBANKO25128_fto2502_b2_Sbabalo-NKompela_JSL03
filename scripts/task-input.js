@@ -1,49 +1,31 @@
-function addTask() {
-  alert("Task added!"); // Temporary test
-}
+const AllTasks = [
+  {
+    id: 1,
+    title: "Launch Epic Career",
+    description: "Create a killer Resume",
+    status: "todo",
+  },
+  {
+    id: 2,
+    title: "Master JavaScript",
+    description: "Get comfortable with the fundamentals",
+    status: "doing",
+  },
+  {
+    id: 3,
+    title: "Contribute to Open Source Projects",
+    description:
+      "Gain practical experience and collaborate with others in the software development community",
+    status: "done",
+  },
+];
 
-function getTaskDetails() {
+let taskId = AllTasks.length + 1; // ✅ Ensures IDs start after existing tasks
+const Tasks = [...AllTasks]; // ✅ Ensures Tasks array is initialized
+
+let addTaskDetails = () => {
   let title = prompt("Enter the task title:").trim();
-  let status = prompt("Enter the task status (TODO, DOING, DONE):")
-    .trim()
-    .toLowerCase();
-
-  // Validate status input
-  while (!["todo", "doing", "done"].includes(status)) {
-    alert("Invalid status! Please enter todo, doing, or done.");
-    status = prompt("Enter the task status (TODO, DOING, DONE):")
-      .trim()
-      .toLowerCase();
-  }
-
-  console.log(`Task Added - Title: "${title}", Status: "${status}"`);
-
-  return { title, status };
-}
-
-function addTask() {
-  let task = getTaskDetails();
-
-  let taskElement = document.createElement("div");
-  taskElement.className =
-    "bg-white rounded-lg hover:bg-[#E4EBFA] hover:scale-101 transition-all duration-300 mb-5 py-4 px-4 text-lg font-bold shadow-md";
-  taskElement.innerHTML = `<h3 class="text-lg font-bold">${task.title}</h3>`;
-
-  document.getElementById(`${task.status}-column`).appendChild(taskElement);
-
-  // Check for completed tasks and log appropriate message
-  let doneTasks = document.getElementById("done-column").children.length;
-
-  if (doneTasks > 0) {
-    console.log(`Task Added - Title: "${title}", Status: "${status}"`);
-  } else {
-    console.log("🚀 No Tasks Completed, let's get to work.");
-  }
-}
-
-//this is
-let getTaskDetails = () => {
-  let title = prompt("Enter the task title:").trim();
+  let description = prompt("Enter the task description:").trim();
   let status = prompt("Enter the task status (TODO, DOING, DONE):")
     .trim()
     .toLowerCase();
@@ -55,21 +37,33 @@ let getTaskDetails = () => {
       .toLowerCase();
   }
 
-  console.log(`Task Added - Title: "${title}", Status: "${status}"`);
-  return { title, status };
+  let task = { id: taskId++, title, description, status };
+  Tasks.push(task); // ✅ Fixed: Now it adds to "Tasks" instead of an undefined array
+
+  console.log(
+    `Task Added - Title: "${title}", Description: "${description}", Status: "${status}"`
+  );
+  console.log(Tasks); // ✅ Logs updated task list
+
+  return task;
 };
 
 let addTask = () => {
-  let task = getTaskDetails();
+  let task = addTaskDetails();
 
   let taskElement = document.createElement("div");
   taskElement.className =
     "bg-white rounded-lg hover:bg-[#E4EBFA] hover:scale-101 transition-all duration-300 mb-5 py-4 px-4 text-lg font-bold shadow-md";
-  taskElement.innerHTML = `<h3 class="text-lg font-bold">${task.title}</h3>`;
+  taskElement.innerHTML = `<h3 class="text-lg font-bold">${task.title}</h3><p class="text-gray-600">${task.description}</p>`;
 
-  document.getElementById(`${task.status}-column`).appendChild(taskElement);
+  let column = document.getElementById(`${task.status}-column`);
+  if (column) {
+    column.appendChild(taskElement); // ✅ Prevents error if column doesn't exist
+  } else {
+    console.warn(`No column found for status: ${task.status}`);
+  }
 
-  let doneTasks = document.getElementById("done-column").children.length;
+  let doneTasks = document.getElementById("done-column")?.children.length || 0;
   console.log(
     doneTasks > 0
       ? `Task Added - Title: "${task.title}", Status: "${task.status}"`
