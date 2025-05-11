@@ -1,3 +1,4 @@
+const MAX_TASKS = 5; // ✅ Set the task limit
 const Tasks = [
   {
     id: 1,
@@ -24,6 +25,14 @@ const doneTasks = Tasks.filter((task) => task.status === "done");
 let taskId = Tasks.length + 1;
 
 let addTaskDetails = () => {
+  if (Tasks.length >= MAX_TASKS) {
+    alert(
+      "There are enough tasks on your board, please check them in the console."
+    );
+    console.log("Task limit reached! No more tasks can be added.");
+    return null;
+  }
+
   let title = prompt("Enter task title:").trim();
   let description = prompt("Enter task description:").trim();
   let status = prompt("Enter task status (TODO, DOING, DONE):")
@@ -52,9 +61,9 @@ let addTask = () => {
   let task = addTaskDetails();
 
   let taskElementHTML = `
-    <div class="bg-white rounded-lg hover:bg-[#E4EBFA] hover:scale-101 transition-all duration-300 mb-5 py-4 px-4 text-lg font-bold shadow-md">
-      <h2 class="text-xl">${task.title}</h2>
-      <p class="text-lg">${task.description}</p>
+    <div class="bg-white rounded-lg hover:bg-[#E4EBFA] hover:scale-101 transition-all duration-300 mb-5 py-4 px-4 font-bold shadow-md grid grid-rows-2">
+      <h2 class="row-span-1 text-lg" >${task.title}</h2>
+      <p class="row-span-1 text-md text-gray-800" >${task.description}</p>
     </div>
   `;
 
@@ -65,8 +74,8 @@ let addTask = () => {
     console.warn(`No column found for status: ${task.status}`);
   }
 
-  console.log(`Task successfully added! ✅`);
+  console.log("Task successfully added!");
 };
 
-console.log(Tasks);
-console.log(doneTasks);
+console.log("All tasks:      ", Tasks);
+console.log("Completed tasks:", doneTasks);
