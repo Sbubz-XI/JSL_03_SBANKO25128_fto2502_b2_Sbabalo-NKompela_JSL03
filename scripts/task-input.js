@@ -1,4 +1,4 @@
-const MAX_TASKS = 5; // ✅ Set the task limit
+const MAX_TASKS = 5;
 const Tasks = [
   {
     id: 1,
